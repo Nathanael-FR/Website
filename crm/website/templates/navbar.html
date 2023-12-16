@@ -1,0 +1,78 @@
+<!-- navbar.html -->
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href=" {% static '/css/navbar.css' %} ">
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3d86ba;">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+        <img src="{% static '/image/ntu_logo.png' %}" alt="Logo" width="80">
+        <span class="ms-3 fs-4">NTU Hospital</span>
+      </a>   
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contacts' %}">
+              <button type="button" class="btn btn-outline-info">Contact us</button>
+            </a>
+          </li>
+          {% if user.is_authenticated %}
+          
+            {% if user.is_staff %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' %}">
+                <button type="button" class="btn btn-primary">
+                  <div class="fw-bold"> DASHBOARD </div>
+                </button>
+              </a>
+            </li>
+            {% elif user.is_patient %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'booking' %}">
+                <button type="button" class="btn btn-info">
+                <div class="fw-bold"> BOOKING NOW </div>
+                </button>
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'booking' %}">
+                <button type="button" class="btn btn-info">
+                <div class="fw-bold"> SCHEDULE </div>
+                </button>
+              </a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'logout' %}">
+                <div class="text-light">Log out</div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'profil' %}">
+                <div class="text-light">Profil</div>
+              </a>
+            </li> 
+          {% else %}
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">
+              <div class="text-light"> Register </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'user_login' %}">
+              <div class="text-light">Login</div>
+              <div class="text-light" style="opacity: 0.7; font-size: 12px;">Your schedule</div>
+            </a> 
+          </li>
+          
+          {% endif %}
+          
+        </ul>
+      </div>
+    </div>
+  </nav>

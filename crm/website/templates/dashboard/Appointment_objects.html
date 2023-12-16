@@ -1,0 +1,43 @@
+<!-- Patients_objects.html -->
+{% extends 'dashboard.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Records</h2>
+    <hr>
+    <div id="recordsSection">
+      <button type="button" class="btn btn-outline-secondary">
+        Add Record
+      </button>
+      <hr>
+      <table class="table table-hover" id="recordsTable">
+          <thead class="table-dark">
+              <tr>
+                  <th>Doctor</th>
+                  <th>Patient</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Action</th>
+
+              </tr>
+          </thead>
+          <tbody>
+              {% for appointment in appointments %}
+                  <tr>
+                      <td>{{ appointment.doctor }}</td>
+                      <td>{{ appointment.patient }}</td>
+                      <td>{{ appointment.date }}</td>
+                      <td>{{ appointment.start_time }} - {{ appointment.end_time }} </td>
+
+                      <td> 
+                        <button type="button" class="btn btn-warning">Edit</button>
+                      </td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    </div>
+  </div>
+
+{% endblock %}

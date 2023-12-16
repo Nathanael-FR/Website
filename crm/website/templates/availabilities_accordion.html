@@ -1,0 +1,120 @@
+<!-- availabilities_accordion.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="accordion" id="accordionAvai">
+{% for date, hours in availability_hours.items %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ date }}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ date }}" aria-expanded="true" aria-controls="collapse{{ date }}">
+                {{ date }}
+            </button>
+        </h2>
+        <div id="collapse{{ date }}" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                {% for availability in hours %}
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    data-date="{{ date }}" data-start-time="{{ availability.0 }}" data-end-time="{{ availability.1 }}">
+                    {{ availability.0 }} - {{ availability.1 }}<br>
+                  </button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<br>
+<div>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque mollis imperdiet nisl id fringilla. Ut tincidunt erat nec est fermentum scelerisque. Ut augue augue, fermentum convallis erat vitae, gravida dictum lacus. Quisque dictum vehicula hendrerit. Sed ultrices rhoncus bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et tortor nibh. Maecenas vitae porta elit.
+</div>
+
+<br>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Booking confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque mollis imperdiet nisl id fringilla. Ut tincidunt erat nec est fermentum scelerisque. Ut augue augue, fermentum convallis erat vitae, gravida dictum lacus. Quisque dictum vehicula hendrerit.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmAppointmentBtn">Confirm appointment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="patient-container" data-patient-id="{{ patient_id }}"></div>
+<div id="doctor-container" data-doctor-id="{{ doctor_id }}"></div>
+
+<script>
+    // Déclarez des variables globales pour stocker les attributs
+var selectedDate = null;
+var selectedStartTime = null;
+var selectedEndTime = null;
+
+document.getElementById('accordionAvai').addEventListener('click', function(event) {
+    // Vérifier si l'élément cliqué est un bouton dans l'accordéon
+    if (event.target.tagName === 'BUTTON') {
+        console.log('Button in Accordion clicked!');
+
+        // Extraire les valeurs depuis les attributs data-* du bouton
+        selectedDate = event.target.getAttribute('data-date');
+        selectedStartTime = event.target.getAttribute('data-start-time');
+        selectedEndTime = event.target.getAttribute('data-end-time');
+    }
+});
+
+document.getElementById('confirmAppointmentBtn').addEventListener('click', function() {
+    console.log('Confirm Appointment Button clicked!');
+
+    // Utilisez les valeurs stockées dans les variables globales
+    var date = selectedDate;
+    var startTime = selectedStartTime;
+    var endTime = selectedEndTime;
+    var patient_id = document.getElementById('patient-container').getAttribute('data-patient-id');
+    var doctor_id = document.getElementById('doctor-container').getAttribute('data-doctor-id');
+
+    var confirmAppointment = new Promise(function (resolve, reject) {
+        // Envoyer une requête AJAX pour confirmer l'objet Appointment
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Traitez la réponse si nécessaire
+                    resolve('Appointment confirmed successfully!');
+                } else {
+                    // Gérer les erreurs de requête côté client
+                    reject('Error confirming appointment: ' + xhr.responseText);
+                }
+            }
+        };
+
+        xhr.open('POST', '/confirm_appointment/', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('patient_id=' + patient_id + '&doctor_id=' + doctor_id + '&date=' + date + '&start_time=' + startTime + '&end_time=' + endTime);
+    });
+
+    confirmAppointment.then(function (result) {
+        console.log(result); // Afficher le résultat dans la console
+        // Rediriger ici vers la page d'accueil
+        window.location.href = '/';
+    }).catch(function (error) {
+        console.error(error); // Afficher l'erreur dans la console
+        // Gérer les erreurs ici (par exemple, afficher un message d'erreur à l'utilisateur)
+    });
+});
+
+
+</script>
+
+{% endblock %}

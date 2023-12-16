@@ -1,0 +1,3 @@
+{% for doctor in doctors %}
+    <option value="{{ doctor.id }}"> {{ doctor.id }} {{ doctor.first_name }} {{ doctor.last_name }}</option>
+{% endfor %}

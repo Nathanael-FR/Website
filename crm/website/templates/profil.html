@@ -1,0 +1,58 @@
+<!-- profil.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/navbar_profil.css' %}">
+
+    <style>
+/* navbar_profil.css */
+.logo {
+    width: 20px; /* Ajustez la taille en fonction de vos besoins */
+    height: auto; /* Assurez-vous que la hauteur s'ajuste proportionnellement */
+    vertical-align: middle; /* Aligner verticalement par rapport au texte */
+    margin-right: 10px; /* Ajouter un espace de 5 pixels à droite du logo */
+}
+
+.sidebar ul {
+    list-style: none; /* Supprimer les puces de la liste */
+    padding: 0; /* Supprimer le remplissage par défaut de la liste */
+}
+
+.sidebar ul li {
+    display: flex; /* Utiliser le modèle de boîte flexible pour aligner le texte et le logo */
+    align-items: center; /* Aligner les éléments enfants au centre verticalement */
+    width: 100%; /* Remplir la largeur de la liste */
+}
+
+    </style>
+    
+
+</head>
+<body>
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>
+            {{ user.first_name }} 
+            {{ user.last_name }} 
+        </h2>
+        <ul>
+            <li><img class="logo" src="{% static '/image/profil/calendar.png' %}" alt="Appointments Logo"><a href="{% url 'patient_appointments'%}">Appointments</a></li>
+            <li><img class="logo" src="{% static '/image/profil/files.png' %}" alt="Files Logo"><a href="#">Files</a></li>
+            <li><img class="logo" src="{% static '/image/profil/profil.png' %}" alt="Edit Profile Logo"><a href="#">Edit your profile</a></li>
+            <li><img class="logo" src="{% static '/image/profil/favorites.png' %}" alt="Favorites Logo"><a href="#">Favorites</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+        <div class="header">
+            Welcome to your profil page  {{ user.first_name }} {{ user.last_name }}.
+        </div>  
+        <div class="info">
+            {% block appointments_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+
+{% endblock %}

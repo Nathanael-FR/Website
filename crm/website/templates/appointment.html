@@ -1,0 +1,27 @@
+<!-- appointment.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Select the department</h2>
+<select class="form-select" aria-label="Select department" name="department" id="department-select">
+    <option selected disabled>Choose a department</option>
+    {% for speciality in specialities %}
+        <option value="{{ speciality.0 }}">{{ speciality.1 }}</option>
+    {% endfor %}
+</select>
+<br>
+
+<h2>Select a doctor</h2>
+<select class="form-select" aria-label="Select doctor" name="doctor" id="doctor-select" disabled>
+    <option selected disabled>Choose a doctor</option>
+</select>
+<br>
+
+<button type="button" class="btn btn-success" id="check-availabilities-btn">Check availabilities</button>
+<button type="button" class="btn btn-danger" id="discard-btn">Discard</button>
+
+<script src="{% static 'js/get_doctor.js'%}"></script>
+<script src="{% static 'js/get_doctor_id.js' %}"></script>
+
+{% endblock %}
